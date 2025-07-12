@@ -1,6 +1,6 @@
 # Linear Regression Breakdown
 
-I have implemented an algorithm that uses gradient descent to train a linear regression model. I have implemented functions for calculating loss and gradient, calculating the model weights (a process which ic called training), and evaluating the model's performance.
+I have implemented an algorithm that uses gradient descent to train a linear regression model. I have implemented functions for calculating loss and gradient, calculating the model weights (a process which is called training), and evaluating the model's performance.
 
 ### Dataset Description
 
