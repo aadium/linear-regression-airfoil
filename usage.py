@@ -1,4 +1,11 @@
-from functions import * 
+from functions import LinearRegressionModel as model
+import pandas as pd 
+
+def load_data(filename: str) -> tuple:
+      df = pd.read_csv(filename)
+      X = df.iloc[:, 1:].values
+      Y = df.iloc[:, 0].values.reshape((-1, 1))
+      return (X, Y)
 
 FULL_TRAIN_FILE = './data/full_train.csv'   # filepath of full_train dataset
 FULL_TEST_FILE = './data/full_test.csv'     # filepath of full_test dataset
@@ -19,19 +26,13 @@ print(f"Full Train X shape: {fullTrainX.shape}, Full Train Y shape: {fullTrainY.
       f"\nFull Test X shape: {fullTestX.shape}, Full Test Y shape: {fullTestY.shape}")
 
 print("========================")
-# Design matrices for toy and full datasets
-toyTrainX = designMatrix(toyTrainX)
-toyTestX = designMatrix(toyTestX)
-fullTrainX = designMatrix(fullTrainX)
-fullTestX = designMatrix(fullTestX)
-
 # Train and evaluate on different datasets
 print("\n" + "="*60)
 print("TRAINING AND EVALUATION")
 print("="*60)
 
 # Example 1: Full dataset with default parameters
-full_theta, full_preds, full_loss = train_and_evaluate(
+full_theta, full_preds, full_loss = model.trainLRModel(
     fullTrainX, fullTrainY, fullTestX, fullTestY, 
-    "Full Dataset", num_epochs=1000, lr=0.01
+    "Airfoil Full", num_epochs=1000, lr=0.01
 )
