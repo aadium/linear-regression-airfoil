@@ -1,4 +1,4 @@
-from functions import LinearRegressionModel as model
+from lrm import LinearRegressionModel as model
 import pandas as pd 
 
 def load_data(filename: str) -> tuple:
