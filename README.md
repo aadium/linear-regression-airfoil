@@ -1,3 +1,7 @@
+# Linear Regression Breakdown
+
+I have implemented an algorithm that uses gradient descent to train a linear regression model. I have implemented functions for calculating loss and gradient, calculating the model weights (a process which ic called training), and evaluating the model's performance.
+
 ### Dataset Description
 
 The [NASA 'airfoil' dataset](https://archive.ics.uci.edu/ml/datasets/Airfoil+Self-Noise#) was "obtained from a series of aerodynamic and acoustic tests of two and three-dimensional airfoil blade sections conducted in an anechoic [soundproof] wind tunnel." - R. Lopez, PhD
