@@ -1,5 +1,5 @@
-from lrm import LinearRegressionModel as model
-import pandas as pd 
+from lrm import LinearRegressionModel
+import pandas as pd
 
 def load_data(filename: str) -> tuple:
       df = pd.read_csv(filename)
@@ -12,6 +12,9 @@ FULL_TEST_FILE = './data/full_test.csv'     # filepath of full_test dataset
 
 TOY_TRAIN_FILE = './data/toy_train.csv'     # filepath of toy_train dataset
 TOY_TEST_FILE = './data/toy_test.csv'       # filepath of toy_test dataset
+
+# Initialize the Linear Regression Model
+model = LinearRegressionModel()
 
 toyTrainX, toyTrainY = load_data(TOY_TRAIN_FILE)
 toyTestX, toyTestY = load_data(TOY_TEST_FILE)
@@ -33,6 +36,6 @@ print("="*60)
 
 # Example 1: Full dataset with default parameters
 full_theta, full_preds, full_loss = model.trainLRModel(
-    fullTrainX, fullTrainY, fullTestX, fullTestY, 
-    "Airfoil Full", num_epochs=1000, lr=0.01
+    X_train=fullTrainX, Y_train=fullTrainY, X_test=fullTestX, Y_test=fullTestY, 
+    dataset_name="Airfoil Full", num_epochs=1000, lr=0.01
 )

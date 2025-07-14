@@ -1,11 +1,15 @@
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 
 class CoreFunctions:
     @staticmethod
     def designMatrix(X: np.ndarray) -> np.ndarray:
         return np.concatenate((np.ones((X.shape[0], 1)), X), axis = 1)
+    
+    @staticmethod
+    def initializeModelParameters(X: np.ndarray) -> np.ndarray:
+        numParameters = X.shape[1]
+        theta = np.zeros((numParameters, 1))
+        return theta
 
     @staticmethod
     def loss(X: np.ndarray, Y: np.ndarray, theta: np.ndarray) -> float:
@@ -36,16 +40,6 @@ class CoreFunctions:
 
             print(f"Epoch {epoch}, Loss: {loss_value:.4f}, Theta: {thetas.flatten()}")
         
-        # Create the plot
-        plt.figure(figsize=(10, 6))
-        plt.plot(range(num_epochs), losses, label='Training Loss', color='blue', linewidth=2)
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.title('Training Loss Over Time')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.show()  # This is crucial to display the plot
-        
         return thetas
 
     @staticmethod
@@ -66,7 +60,7 @@ class LinearRegressionModel:
         X_test = self.core.designMatrix(X_test)
         
         # Initial theta (weights)
-        theta0 = np.zeros((X_train.shape[1], 1))
+        theta0 = self.core.initializeModelParameters(X_train)
         if verbose:
             print(f"Initial Theta shape: {theta0.shape}, Initial Theta: {theta0.flatten()}")
         
