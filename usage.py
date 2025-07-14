@@ -1,4 +1,4 @@
-from lrm import LinearRegressionModel
+from lrm import LinearRegressionModel, ClosedFormLinearRegressionModel
 import pandas as pd
 
 def load_data(filename: str) -> tuple:
@@ -13,8 +13,8 @@ FULL_TEST_FILE = './data/full_test.csv'     # filepath of full_test dataset
 TOY_TRAIN_FILE = './data/toy_train.csv'     # filepath of toy_train dataset
 TOY_TEST_FILE = './data/toy_test.csv'       # filepath of toy_test dataset
 
-# Initialize the Linear Regression Model
-model = LinearRegressionModel()
+lrModel = LinearRegressionModel()
+cflrModel = ClosedFormLinearRegressionModel()
 
 toyTrainX, toyTrainY = load_data(TOY_TRAIN_FILE)
 toyTestX, toyTestY = load_data(TOY_TEST_FILE)
@@ -34,8 +34,12 @@ print("\n" + "="*60)
 print("TRAINING AND EVALUATION")
 print("="*60)
 
-# Example 1: Full dataset with default parameters
-full_theta, full_preds, full_loss = model.trainLRModel(
+full_theta, full_preds, full_loss = lrModel.trainLRModel(
     X_train=fullTrainX, Y_train=fullTrainY, X_test=fullTestX, Y_test=fullTestY, 
     dataset_name="Airfoil Full", num_epochs=1000, lr=0.01
+)
+
+closed_theta, closed_preds, closed_loss = cflrModel.trainCLRModel(
+    X_train=fullTrainX, Y_train=fullTrainY, X_test=fullTestX, Y_test=fullTestY, 
+    dataset_name="Airfoil Full (Closed Form)"
 )
