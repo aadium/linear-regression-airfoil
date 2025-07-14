@@ -115,13 +115,61 @@ class LinearRegressionModel:
             print("="*50)
         
         return theta, predictions, test_loss
-    
-    def predict(self, X: np.ndarray) -> np.ndarray:
-        if not self.is_trained:
-            raise ValueError("Model must be trained before making predictions. Call trainLRModel() first.")
-        return self.core.predict(X, self.theta)
-    
-    def get_loss(self, X: np.ndarray, Y: np.ndarray) -> float:
-        if not self.is_trained:
-            raise ValueError("Model must be trained before calculating loss. Call trainLRModel() first.")
-        return self.core.loss(X, Y, self.theta)
+
+class ClosedFormLinearRegressionModel:
+    def __init__(self):
+        self.core = CoreFunctions()
+        self.theta = None
+        self.is_trained = False
+
+    def trainCLRModel(self, X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarray, Y_test: np.ndarray, 
+                        dataset_name: str, verbose: bool = True) -> tuple:
+        X_design = self.core.designMatrix(X_train)
+        X_test = self.core.designMatrix(X_test)
+        theta = np.linalg.inv(X_design.T @ X_design) @ X_design.T @ Y_train
+
+        self.theta = theta
+        self.is_trained = True
+        if verbose:
+            print(f"Final Theta for {dataset_name}: {theta.flatten()}")
+
+        # Testing the model
+        predictions = self.core.predict(X_test, theta)
+        test_loss = self.core.loss(X_test, Y_test, theta)
+        
+        if verbose:
+            print(f"\n" + "="*50)
+            print(f"          {dataset_name.upper()} RESULTS")
+            print("="*50)
+            
+            # Create a comparison table
+            actual = Y_test.flatten()
+            predicted = predictions.flatten()
+            errors = np.abs(actual - predicted)
+            
+            # Show first 10 and last 10 predictions to avoid too much output
+            print(f"{'Index':<6} {'Actual':<10} {'Predicted':<12} {'Error':<10}")
+            print("-" * 50)
+            print("First 10 predictions:")
+            for i in range(min(10, len(actual))):
+                print(f"{i:<6} {actual[i]:<10.4f} {predicted[i]:<12.4f} {errors[i]:<10.4f}")
+            
+            if len(actual) > 10:
+                print("...")
+                print("Last 10 predictions:")
+                for i in range(max(len(actual)-10, 10), len(actual)):
+                    print(f"{i:<6} {actual[i]:<10.4f} {predicted[i]:<12.4f} {errors[i]:<10.4f}")
+            
+            print("-" * 50)
+            print(f"Mean Absolute Error: {np.mean(errors):.4f}")
+            print(f"Root Mean Square Error: {np.sqrt(np.mean(errors**2)):.4f}")
+            print(f"Total Loss: {test_loss:.4f}")
+            
+            # Summary statistics
+            print(f"\nSUMMARY:")
+            print(f"  Total samples: {len(actual)}")
+            print(f"  Best Prediction (lowest error): Index {np.argmin(errors)}, Error: {np.min(errors):.4f}")
+            print(f"  Worst Prediction (highest error): Index {np.argmax(errors)}, Error: {np.max(errors):.4f}")
+            print("="*50)
+        
+        return theta, predictions, test_loss
